@@ -6,7 +6,7 @@ from app.services.check_limit import check_limit
 
 router = APIRouter(prefix="/usage", tags=["Usage"])
 
-CURRENT_USER_ID = 2  # simulated logged-in user
+CURRENT_USER_ID = 1  # simulated logged-in user
 
 
 @router.post("")

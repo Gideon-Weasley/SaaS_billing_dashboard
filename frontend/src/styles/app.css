@@ -1,15 +1,19 @@
 body {
   font-family: Arial, sans-serif;
+  background-color:rgba(97, 17, 158, 0.969);
 }
 
 .page {
   padding: 20px;
+  color:bisque
 }
 
 .card {
-  padding: 15px;
+  background-color: #222;
+  padding: 7px;
   border: 1px solid #ccc;
   width: 300px;
+  color:aquamarine
 }
 
 table {
@@ -23,7 +27,7 @@ td, th {
 }
 
 .navbar {
-  background: #222;
-  color: white;
+  color: black;
   padding: 10px;
+  font-size: 24px;
 }

@@ -15,3 +15,7 @@ export async function getInvoices() {
   }
   return res.json();
 }
+
+export async function generateInvoice(user_id) {
+  const res = await fetch(`${BASE_URL}/billing/manual`);
+  }
