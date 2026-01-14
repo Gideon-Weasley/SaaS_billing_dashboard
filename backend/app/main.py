@@ -1,0 +1,21 @@
+from fastapi import FastAPI
+from app.routes.usage import router as usage_router
+from app.routes.invoices import router as invoices_router
+from app.services.scheduler import start_scheduler
+from app.services.billing_service import router as billing_router
+from app.routes.unsubscribe import router as unsubscribe_router
+app = FastAPI(title="SaaS Usage & Billing Backend")
+
+app.include_router(usage_router)
+app.include_router(invoices_router)
+app.include_router(billing_router)
+app.include_router(unsubscribe_router)
+start_scheduler()
+
+
+@app.get("/")
+def root():
+    return {
+        "status": "running",
+        "service": "SaaS Billing Backend"
+    }
