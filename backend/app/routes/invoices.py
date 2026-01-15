@@ -3,11 +3,11 @@ from app.db.session import get_db_connection
 
 router = APIRouter(prefix="/invoices", tags=["Invoices"]) #how does these all appear when running main?
 
-CURRENT_USER_ID = 1
+#user_id = 1
 
 
-@router.get("")
-def get_invoices():
+@router.get("/")
+def get_invoices(user_id:int):
     conn = get_db_connection()
     cur = conn.cursor()
 
@@ -22,7 +22,7 @@ def get_invoices():
         FROM invoices
         WHERE user_id = %s
         ORDER BY billing_period_start DESC
-    """, (CURRENT_USER_ID,))
+    """, (user_id,))
 
     invoices = cur.fetchall()
 

@@ -1,27 +1,21 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import { getUsageSummary } from "../api/api";
-import UsageCard from "../components/UsageCard";
 
-function Dashboard() {
+export default function Dashboard() {
+  const { user } = useAuth();
   const [usage, setUsage] = useState(null);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    getUsageSummary()
-      .then(setUsage)
-      .catch((err) => {
-        console.error("Failed to load usage:", err);
-        setError(err.message);
-      });
-  }, []);
+    if (user) {
+      getUsageSummary(user.user_id).then(setUsage);
+    }
+  }, [user]);
 
   return (
-    <div className="page">
-      <h2>Usage Dashboard</h2>
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
-      {usage ? <UsageCard usage={usage} /> : <p>Loading...</p>}
+    <div>
+      <h2>Dashboard</h2>
+      {usage && <p>Total usage: {usage.total_units}</p>}
     </div>
   );
 }
-
-export default Dashboard;

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
 class UsageCreate(BaseModel):
@@ -14,3 +14,11 @@ class ManualBillingRequest(BaseModel):
 class UnsubscribeRequest(BaseModel):
     user_id: int
     reason: str
+
+class Authentication(BaseModel):
+    email_id: EmailStr
+    passwd: str
+
+class RegisterUser(BaseModel):
+    email: EmailStr
+    password: str

@@ -1,20 +1,27 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import { getInvoices } from "../api/api";
-import InvoiceTable from "../components/InvoiceTable";
 
-function Invoices() {
+export default function Invoices() {
+  const { user } = useAuth();
   const [invoices, setInvoices] = useState([]);
 
   useEffect(() => {
-    getInvoices().then(setInvoices);
-  }, []);
+    if (user) {
+      getInvoices(user.user_id).then(setInvoices);
+    }
+  }, [user]);
 
   return (
-    <div className="page">
+    <div>
       <h2>Invoices</h2>
-      <InvoiceTable invoices={invoices} />
+      <ul>
+        {invoices.map((inv) => (
+          <li key={inv.id}>
+            {inv.billing_period_start} – ₹{inv.amount}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
-
-export default Invoices;

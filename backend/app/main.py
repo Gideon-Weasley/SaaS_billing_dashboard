@@ -5,6 +5,7 @@ from app.routes.invoices import router as invoices_router
 from app.services.scheduler import start_scheduler
 from app.services.billing_service import router as billing_router
 from app.routes.unsubscribe import router as unsubscribe_router
+from app.routes.auth import router as auth_router
 app = FastAPI(title="SaaS Usage & Billing Backend")
 app.add_middleware(
     CORSMiddleware,
@@ -18,6 +19,7 @@ app.include_router(usage_router)
 app.include_router(invoices_router)
 app.include_router(billing_router)
 app.include_router(unsubscribe_router)
+app.include_router(auth_router)
 start_scheduler()
 
 

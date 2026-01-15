@@ -1,15 +1,15 @@
+import { useAuth } from "./context/AuthContext";
+import Login from "./pages/login";
 import Dashboard from "./pages/Dashboard";
-import Invoices from "./pages/Invoices";
-import Navbar from "./components/Navbar";
 
 function App() {
-  return (
-    <>
-      <Navbar />
-      <Dashboard />
-      <Invoices />
-    </>
-  );
+  const { user } = useAuth();
+
+  if (!user) {
+    return <Login />;
+  }
+
+  return <Dashboard />;
 }
 
 export default App;

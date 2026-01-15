@@ -6,7 +6,7 @@ from app.services.check_limit import check_limit
 
 router = APIRouter(prefix="/usage", tags=["Usage"])
 
-CURRENT_USER_ID = 1  # simulated logged-in user
+user_id = 1  # simulated logged-in user
 
 
 @router.post("")
@@ -38,7 +38,7 @@ def add_usage(usage: UsageCreate,status_code=status.HTTP_201_CREATED):
 
 
 @router.get("/summary")
-def get_monthly_usage_summary():
+def get_monthly_usage_summary(user_id: int):
     today = date.today()
     month_start = today.replace(day=1)
 
@@ -53,7 +53,7 @@ def get_monthly_usage_summary():
         WHERE user_id = %s
         AND timestamp >= %s
         """,
-        (CURRENT_USER_ID, month_start)
+        (user_id, month_start)
     )
 
     result = cur.fetchone()
