@@ -44,3 +44,19 @@ export async function getMonthlyUsage(userId) {
   );
   return res.json();
 }
+
+export async function payInvoice(invoiceId, userId) {
+  const res = await fetch(
+    `http://localhost:8000/payments/pay?invoice_id=${invoiceId}&user_id=${userId}`,
+    {
+      method: "POST"
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Payment failed");
+  }
+
+  return res.json();
+}
+

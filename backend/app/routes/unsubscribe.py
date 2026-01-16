@@ -1,18 +1,43 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 from app.db.session import get_db_connection
 from app.models.schemas import UnsubscribeRequest
+
 router = APIRouter(prefix="/unsubscribe", tags=["Unsubscribe"])
 
-CURR_USER_ID=3
 @router.post("", status_code=status.HTTP_200_OK)
-def unsubscribe_user(details:UnsubscribeRequest):
-    conn=get_db_connection()
-    curr=conn.cursor()
+def unsubscribe_user(details: UnsubscribeRequest):
+    conn = get_db_connection()
+    cur = conn.cursor()
 
-    curr.execute("""DELETE FROM users WHERE id=%s""",(details.user_id,))
+    # 1. Check for pending invoices
+    cur.execute("""
+        SELECT COUNT(*) AS pending_count
+        FROM invoices
+        WHERE user_id = %s
+        AND status = 'PENDING'
+    """, (details.user_id,))
+
+    pending = cur.fetchone()["pending_count"]
+
+    if pending > 0:
+        cur.close()
+        conn.close()
+        raise HTTPException(
+            status_code=400,
+            detail="Cannot unsubscribe: pending payments exist"
+        )
+
+    # 2. Safe to unsubscribe
+    cur.execute("""
+        DELETE FROM users
+        WHERE id = %s
+    """, (details.user_id,))
 
     conn.commit()
-    curr.close()
+    cur.close()
     conn.close()
-    return{"message":"User unsubscribed successfully",
-           "reason":details.reason}
+
+    return {
+        "message": "User unsubscribed successfully",
+        "reason": details.reason
+    }

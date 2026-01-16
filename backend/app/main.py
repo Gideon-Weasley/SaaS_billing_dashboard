@@ -7,8 +7,9 @@ from app.services.billing_service import router as billing_router
 from app.routes.unsubscribe import router as unsubscribe_router
 from fastapi import WebSocket, WebSocketDisconnect
 from app.ws.usage_ws import manager
-
+from app.routes.payment import router as payments_router
 from app.routes.auth import router as auth_router
+
 app = FastAPI(title="SaaS Usage & Billing Backend")
 app.add_middleware(
     CORSMiddleware,
@@ -23,6 +24,7 @@ app.include_router(invoices_router)
 app.include_router(billing_router)
 app.include_router(unsubscribe_router)
 app.include_router(auth_router)
+app.include_router(payments_router)
 start_scheduler()
 
 
