@@ -13,15 +13,17 @@ def get_invoices(user_id:int):
 
     cur.execute("""
         SELECT
-            billing_period_start,
-            billing_period_end,
-            total_units,
-            amount,
-            status,
-            created_at
+        id,
+        billing_period_start,
+        billing_period_end,
+        total_units,
+        amount,
+        status,
+        created_at
         FROM invoices
         WHERE user_id = %s
         ORDER BY billing_period_start DESC
+
     """, (user_id,))
 
     invoices = cur.fetchall()

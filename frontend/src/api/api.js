@@ -37,3 +37,10 @@ export async function loginUser(email, password) {
 
   return res.json();
 }
+
+export async function getMonthlyUsage(userId) {
+  const res = await fetch(
+    `http://localhost:8000/usage/monthly?user_id=${userId}`
+  );
+  return res.json();
+}

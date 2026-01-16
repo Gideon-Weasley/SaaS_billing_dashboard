@@ -2,6 +2,7 @@ from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
 class UsageCreate(BaseModel):
+    u_id:int
     units_used: int
 
 class UsageSummary(BaseModel):
@@ -16,9 +17,10 @@ class UnsubscribeRequest(BaseModel):
     reason: str
 
 class Authentication(BaseModel):
-    email_id: EmailStr
-    passwd: str
+    email: EmailStr
+    password: str
 
 class RegisterUser(BaseModel):
     email: EmailStr
     password: str
+    plan_id: int

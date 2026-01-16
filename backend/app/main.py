@@ -5,6 +5,9 @@ from app.routes.invoices import router as invoices_router
 from app.services.scheduler import start_scheduler
 from app.services.billing_service import router as billing_router
 from app.routes.unsubscribe import router as unsubscribe_router
+from fastapi import WebSocket, WebSocketDisconnect
+from app.ws.usage_ws import manager
+
 from app.routes.auth import router as auth_router
 app = FastAPI(title="SaaS Usage & Billing Backend")
 app.add_middleware(
@@ -29,3 +32,17 @@ def root():
         "status": "running",
         "service": "SaaS Billing Backend"
     }
+
+@app.websocket("/ws/usage")
+async def usage_websocket(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            message = await websocket.receive()
+            if message["type"] == "websocket.disconnect":
+                break
+    finally:
+        manager.disconnect(websocket)
+
+
+

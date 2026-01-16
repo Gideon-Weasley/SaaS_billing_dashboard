@@ -24,11 +24,11 @@ def register(user: RegisterUser):
 
     cur.execute(
         """
-        INSERT INTO users (email, password_hash)
-        VALUES (%s, %s)
+        INSERT INTO users (email,plan_id, password_hash)
+        VALUES (%s, %s, %s)
         RETURNING id
         """,
-        (user.email, password_hash)
+        (user.email, user.plan_id, password_hash)
     )
 
     user_id = cur.fetchone()["id"]
@@ -46,7 +46,7 @@ def login(details: Authentication):
 
     cur.execute(
         "SELECT id, password_hash FROM users WHERE email = %s",
-        (details.email_id,)
+        (details.email,)
     )
     user = cur.fetchone()
 
@@ -56,7 +56,7 @@ def login(details: Authentication):
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    if not verify_password(details.passwd, user["password_hash"]):
+    if not verify_password(details.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     return {
