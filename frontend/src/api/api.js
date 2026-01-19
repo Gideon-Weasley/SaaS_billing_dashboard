@@ -17,7 +17,7 @@ export async function getInvoices(userId) {
 
 export async function generateInvoice(user_id) {
   const res = await fetch(`${BASE_URL}/billing/manual`);
-  }
+}
 
 export async function loginUser(email, password) {
   const res = await fetch(`${BASE_URL}/auth/login`, {
@@ -33,6 +33,27 @@ export async function loginUser(email, password) {
 
   if (!res.ok) {
     throw new Error("Invalid credentials");
+  }
+
+  return res.json();
+}
+
+export async function registerUser(email, password, planId = 1) {
+  const res = await fetch(`${BASE_URL}/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      password,
+      plan_id: planId,
+    }),
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || "Registration failed");
   }
 
   return res.json();
@@ -55,6 +76,26 @@ export async function payInvoice(invoiceId, userId) {
 
   if (!res.ok) {
     throw new Error("Payment failed");
+  }
+
+  return res.json();
+}
+
+export async function unsubscribeUser(userId, reason = "User requested") {
+  const res = await fetch(`${BASE_URL}/unsubscribe`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      user_id: userId,
+      reason,
+    }),
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || "Unsubscribe failed");
   }
 
   return res.json();

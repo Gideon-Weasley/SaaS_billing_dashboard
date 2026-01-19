@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import Invoices from "./pages/Invoices";
 import Login from "./pages/login";
+import "./styles/app.css";
 
 function App() {
   const { user } = useAuth();
@@ -14,8 +15,10 @@ function App() {
   return (
     <>
       <Navbar setActivePage={setActivePage} />
-      {activePage === "dashboard" && <Dashboard />}
-      {activePage === "invoices" && <Invoices />}
+      <main style={{ backgroundColor: "var(--bg-light)" }}>
+        {activePage === "dashboard" && <Dashboard />}
+        {activePage === "invoices" && <Invoices />}
+      </main>
     </>
   );
 }

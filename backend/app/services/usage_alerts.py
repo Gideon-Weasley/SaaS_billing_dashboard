@@ -42,7 +42,7 @@ async def check_usage_thresholds():
                     await send_email(
                         u["email"],
                         "Usage Alert",
-                        f"You have reached {percent}% of your usage limit."
+                        f"You have reached {threshold}% of your usage limit."
                     )
 
     cur.close()

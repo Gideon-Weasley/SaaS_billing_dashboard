@@ -38,7 +38,6 @@ def create_previous_month_invoice(user_id: int):
 
     total_units = cur.fetchone()["total_units"]
 
-    # pricing + email
     cur.execute("""
         SELECT u.email, p.ppu
         FROM users u
@@ -52,7 +51,6 @@ def create_previous_month_invoice(user_id: int):
 
     amount = total_units * price_per_unit
 
-    # ✅ INSERT INVOICE
     cur.execute("""
         INSERT INTO invoices (
             user_id,

@@ -2,7 +2,7 @@
 backend/venv/
 __pycache__/
 *.pyc
-backend/scripts/migrate_passwd.py
+backend/scripts/migrate_passwd.py   
 
 # Frontend
 frontend/node_modules/

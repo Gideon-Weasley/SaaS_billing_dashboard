@@ -9,7 +9,6 @@ def unsubscribe_user(details: UnsubscribeRequest):
     conn = get_db_connection()
     cur = conn.cursor()
 
-    # 1. Check for pending invoices
     cur.execute("""
         SELECT COUNT(*) AS pending_count
         FROM invoices
@@ -27,7 +26,6 @@ def unsubscribe_user(details: UnsubscribeRequest):
             detail="Cannot unsubscribe: pending payments exist"
         )
 
-    # 2. Safe to unsubscribe
     cur.execute("""
         DELETE FROM users
         WHERE id = %s
